@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import {Grid, Box, makeStyles, TableCell, TableRow, Typography, Collapse, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  makeStyles,
+  TableCell,
+  TableRow,
+  Typography,
+  Collapse,
+  IconButton,
+} from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import VisibilityIcon from "@material-ui/icons/Visibility";
@@ -11,7 +20,7 @@ interface MeetingsTableRowProps {
   tableRow: {
     meetingName: string;
     startTime: Date;
-    URL: string;
+    url: string;
     message: string;
     status: MeetingStatus;
   };
@@ -26,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
-  const { meetingName, startTime, URL, message, status } = tableRow;
+  const { meetingName, startTime, url, message, status } = tableRow;
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
   return (
@@ -39,20 +48,24 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
         </TableCell>
         <TableCell align="center">{meetingName}</TableCell>
         <TableCell align="center">{startTime.toISOString()}</TableCell>
-        <TableCell align="center">{URL}</TableCell>
+        <TableCell align="center">
+          <a href={url} target="_blank">
+            {url}
+          </a>
+        </TableCell>
         <TableCell align="center">{message}</TableCell>
         <TableCell align="center">{status}</TableCell>
         <TableCell align="center">
           <Grid container direction="column">
-          <IconButton aria-label="view" color="primary">
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton aria-label="edit" color="primary">
-            <EditIcon />
-          </IconButton>
-          <IconButton aria-label="delete" color="primary">
-            <DeleteIcon />
-          </IconButton>
+            <IconButton aria-label="view" color="primary">
+              <VisibilityIcon />
+            </IconButton>
+            <IconButton aria-label="edit" color="primary">
+              <EditIcon />
+            </IconButton>
+            <IconButton aria-label="delete" color="primary">
+              <DeleteIcon />
+            </IconButton>
           </Grid>
         </TableCell>
       </TableRow>
