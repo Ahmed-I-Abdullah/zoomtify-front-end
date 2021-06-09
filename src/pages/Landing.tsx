@@ -6,9 +6,9 @@ interface LandingProps {}
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "86%",
-    margin: "30px 7%",
-    height: "100%",
+    width: "100%",
+    height: "100vh",
+    backgroundColor: '#1A1A1D',
   },
 }));
 

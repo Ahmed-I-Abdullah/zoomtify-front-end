@@ -9,10 +9,19 @@ interface NavBarProps {
 }
 
 const useStyles = makeStyles({
+  navContainer: {
+    width: '100%',
+    backgroundColor: '#1A1A1D',
+    height: '100px',
+  },
   navRoot: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    height: '100%',
+    width: '86%',
+    margin: '0px 7%',
+    alignItems: 'center',
   },
   linkDiv: {
     display: "flex",
@@ -32,31 +41,38 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   navTitle: {
-    color: theme.palette.text.primary,
+    color: '#ffffff',
     marginLeft: "20px",
+    marginTop: "3px",
   },
   navButton: {
     margin: "0px 20px",
     height: "50px",
   },
 });
+
 const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
   const classes = useStyles();
   return (
-    <div className={classes.navRoot}>
+    <div className={classes.navContainer}> 
+      <div className={classes.navRoot}>
       <div style={{ width: "20%" }}>
-        <Link className={classes.linkDiv} to="/">
+        <Link className={classes.linkDiv} to="/landing">
           <img src={Logo} style={{ height: "55px" }} alt="Logo" />
           <h1 className={classes.navTitle}>Zoomtify</h1>
         </Link>
       </div>
       <div className={classes.buttonsDiv}>
-        <Button className={classes.navButton} color="secondary">
+        {showLogIn ? (
+          <React.Fragment>
+            <Button className={classes.navButton} color="secondary">
           Home
         </Button>
         <Button className={classes.navButton} color="secondary">
           About
         </Button>
+          </React.Fragment>
+        ) : null}
         <Button
           className={classes.navButton}
           variant="outlined"
@@ -65,6 +81,7 @@ const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
         {showLogIn ? "Log In" : "Sign Out"}
         </Button>
       </div>
+    </div>
     </div>
   );
 };
