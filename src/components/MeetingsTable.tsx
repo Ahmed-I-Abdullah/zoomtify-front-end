@@ -17,8 +17,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import { MeetingStatus } from "../models/Enums";
 
-interface MeetingsTableProps {}
-
 const Meetings = [
   {
     meetingName: "Monday's Standup",
@@ -77,11 +75,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 4px 4px #C4C4C4",
     borderRadius: "30px",
     minWidth: "0px",
-    margin: "50px 0px",
+    margin: "25px 0px",
   },
 }));
 
-const MeetingsTable: React.FC<MeetingsTableProps> = ({}) => {
+const MeetingsTable: React.FC = () => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState(""); // to use for search bar
   return (
@@ -127,7 +125,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({}) => {
             </Grid>
           </Grid>
           <Grid item container justify="flex-end" xs={12}>
-            <TableContainer style={{ overflowY: "scroll", height: "55vh" }}>
+            <TableContainer style={{ overflowY: "scroll", height: "calc(100vh - 300px)" }}>
               <Table aria-label="meetings table">
                 <TableHead>
                   <TableRow>

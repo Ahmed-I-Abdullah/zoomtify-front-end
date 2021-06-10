@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 4px 4px #C4C4C4",
     borderRadius: "30px",
     minWidth: "0px",
-    margin: "50px 0px",
+    margin: "125px 0px",
   },
 }));
 
@@ -111,7 +111,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
             </Grid>
           </Grid>
           <Grid item container justify="flex-end" xs={12}>
-            <TableContainer style={{ overflowY: "scroll", height: "55vh" }}>
+            <TableContainer style={{ overflowY: "scroll", height: "calc(100vh - 200px)" }}>
               <Table aria-label="contacts table">
                 <TableHead>
                   <TableRow>

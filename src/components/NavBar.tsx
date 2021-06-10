@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles, Button } from "@material-ui/core";
 import Logo from "../assets/logo.svg";
-import { theme } from "../theme/theme";
 
 interface NavBarProps {
   showLogIn: boolean;
