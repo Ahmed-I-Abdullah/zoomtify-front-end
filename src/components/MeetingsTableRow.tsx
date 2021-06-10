@@ -8,6 +8,8 @@ import {
   Typography,
   Collapse,
   IconButton,
+  Checkbox,
+  TextField,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -15,6 +17,15 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { MeetingStatus } from "../models/Enums";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@material-ui/icons/CheckBox";
+
+interface ContactItem {
+  name: string;
+}
+
+interface ContactItems extends Array<ContactItem> {}
 
 interface MeetingsTableRowProps {
   tableRow: {
@@ -23,8 +34,30 @@ interface MeetingsTableRowProps {
     url: string;
     message: string;
     status: MeetingStatus;
+    contacts: ContactItems;
   };
 }
+
+const allContacts = [
+  {
+    name: "Omar Ibrahim",
+  },
+  {
+    name: "Mohammed al",
+  },
+  {
+    name: "Test Contact",
+  },
+  {
+    name: "Youssef Random",
+  },
+  {
+    name: "Ahmed Abdullah",
+  },
+  {
+    name: "Jack son",
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
-  const { meetingName, startTime, url, message, status } = tableRow;
+  const { meetingName, startTime, url, message, status, contacts } = tableRow;
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
   return (
@@ -72,11 +105,37 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
       <TableRow>
         <TableCell colSpan={6}>
           <Collapse in={rowOpen} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Contacts To Notify
-              </Typography>
-            </Box>
+            <Autocomplete
+              multiple
+              options={allContacts.filter(
+                (contact) =>
+                  !contacts.map((value) => value.name).includes(contact.name)
+              )}
+              disableCloseOnSelect
+              getOptionLabel={(option) => option.name}
+              defaultValue={[...contacts]}
+              renderOption={(option, { selected }) => (
+                <React.Fragment>
+                  <Checkbox
+                    icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                    checkedIcon={<CheckBoxIcon fontSize="small" />}
+                    style={{ marginRight: 8 }}
+                    checked={selected}
+                  />
+                  {option.name}
+                </React.Fragment>
+              )}
+              style={{ width: "50%" }}
+              renderInput={(params) => (
+                <TextField
+                  margin="dense"
+                  {...params}
+                  variant="outlined"
+                  label="Contacts to notify"
+                  placeholder="edit contacts"
+                />
+              )}
+            />
           </Collapse>
         </TableCell>
       </TableRow>

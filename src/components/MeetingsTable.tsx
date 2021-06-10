@@ -26,6 +26,14 @@ const Meetings = [
     url: "http://www.example.com/",
     message: "Hello, attached is my meeting schedule",
     status: MeetingStatus.Started,
+    contacts: [
+      {
+        name: "Ahmed Abdullah",
+      },
+      {
+        name: "Jack son",
+      },
+    ],
   },
   {
     meetingName: "System Design Lecture",
@@ -33,6 +41,14 @@ const Meetings = [
     url: "https://example.com/bone",
     message: "Have a good day!",
     status: MeetingStatus.Opened,
+    contacts: [
+      {
+        name: "Test Contact",
+      },
+      {
+        name: "Youssef Random",
+      },
+    ],
   },
   {
     meetingName: "My Club Meeting",
@@ -40,6 +56,14 @@ const Meetings = [
     url: "https://bubble.example.com/",
     message: "..",
     status: MeetingStatus.Failed,
+    contacts: [
+      {
+        name: "Omar Ibrahim",
+      },
+      {
+        name: "Mohammed al",
+      },
+    ],
   },
 ];
 
@@ -53,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 4px 4px #C4C4C4",
     borderRadius: "30px",
     minWidth: "0px",
-    margin: "100px 0px",
+    margin: "50px 0px",
   },
 }));
 
@@ -73,13 +97,14 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({}) => {
             justify="space-between"
             style={{ margin: "20px 1%" }}
           >
-            <Grid item xs={6} sm={8}>
+            <Grid item xs={6}>
               <TextField
                 type="search"
                 variant="outlined"
                 margin="dense"
                 label="Search Meetings"
                 value={searchText}
+                style={{ width: "100%" }}
                 onChange={(e) => setSearchText(e.target.value)}
                 InputProps={{
                   startAdornment: (
@@ -90,7 +115,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({}) => {
                 }}
               />
             </Grid>
-            <Grid container item xs={4} sm={2} justify="flex-end">
+            <Grid container item xs={6} justify="flex-end">
               <Button
                 variant="contained"
                 color="primary"
@@ -102,7 +127,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({}) => {
             </Grid>
           </Grid>
           <Grid item container justify="flex-end" xs={12}>
-            <TableContainer>
+            <TableContainer style={{ overflowY: "scroll", height: "55vh" }}>
               <Table aria-label="meetings table">
                 <TableHead>
                   <TableRow>
