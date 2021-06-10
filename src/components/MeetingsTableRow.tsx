@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import {
   Grid,
-  Box,
   makeStyles,
   TableCell,
-  TableRow,
-  Typography,
   Collapse,
   IconButton,
   Checkbox,
   TextField,
+  TableRow,
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
@@ -89,7 +87,7 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
         <TableCell align="center">{message}</TableCell>
         <TableCell align="center">{status}</TableCell>
         <TableCell align="center">
-          <Grid container direction="column">
+          <Grid container direction="row">
             <IconButton aria-label="view" color="primary">
               <VisibilityIcon />
             </IconButton>

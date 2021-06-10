@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import NavBar from "../components/NavBar";
 import MeetingsTable from "../components/MeetingsTable";
+import ContactsTable from "../components/ContactsTable";
 
 interface MeetingsProps {}
 
@@ -19,6 +20,8 @@ export const Meetings: React.FC<MeetingsProps> = ({}) => {
     <div className={classes.root}>
       <NavBar showLogIn={false} />
       <MeetingsTable />
+      <ContactsTable />
+      <div style={{height: '100px'}}/>
     </div>
   );
 };
