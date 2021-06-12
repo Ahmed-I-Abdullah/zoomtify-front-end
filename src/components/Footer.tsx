@@ -6,7 +6,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 const useStyles = makeStyles((theme) => ({
   footerContainer: {
     backgroundColor: "#1A1A1D",
-    minHeight: "7em",
+    height: "130px",
     width: "100%",
     position: "relative",
     bottom: "0",
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   contactIcon: {
     width: "50px",
     height: "50px",
+    color: "#ffffff",
   },
 }));
 
@@ -28,10 +29,10 @@ const Footer: React.FC = () => {
   return (
     <div className={classes.footerContainer}>
       <div className={classes.contactInfo}>
-        <IconButton aria-label="github">
+        <IconButton aria-label="github" color="primary">
           <GitHubIcon className={classes.contactIcon} />
         </IconButton>
-        <IconButton aria-label="linkedin">
+        <IconButton aria-label="linkedin" color="primary">
           <LinkedInIcon className={classes.contactIcon} />
         </IconButton>
       </div>

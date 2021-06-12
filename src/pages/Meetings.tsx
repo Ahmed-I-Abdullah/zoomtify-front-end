@@ -4,8 +4,14 @@ import NavBar from "../components/NavBar";
 import MeetingsTable from "../components/MeetingsTable";
 import ContactsTable from "../components/ContactsTable";
 import Footer from '../components/Footer';
+import Meeting from '../models/Meeting';
 
-interface MeetingsProps {}
+interface MeetingsProps {
+  meetings: MeetingsArray | null;
+  loading: boolean;
+}
+
+interface MeetingsArray extends Array<Meeting>{}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const Meetings: React.FC<MeetingsProps> = ({}) => {
+export const Meetings: React.FC<MeetingsProps> = ({ meetings, loading}) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
