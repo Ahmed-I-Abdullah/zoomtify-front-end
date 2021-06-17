@@ -1,38 +1,45 @@
-import React, {useState, useEffect} from 'react';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core';
-import Landing from './pages/Landing';
-import { theme } from './theme/theme';
-import { Meetings } from './pages/Meetings';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core";
+import Landing from "./pages/Landing";
+import Meetings from "./pages/Meetings";
+import SignUp from "./pages/SignUp";
+import LogIn from "./pages/LogIn";
+import { theme } from "./theme/theme";
 
-const App = () =>  {
+const App = () => {
   const [meetings, setMeetings] = useState(null);
   const [loading, setLoading] = useState(false);
-	useEffect(() => {
+  useEffect(() => {
     setLoading(true);
-		const apiUrl = process.env.REACT_APP_API_URL + 'meetings';
+    const apiUrl = process.env.REACT_APP_API_URL + "meetings";
     console.log("the url: ", apiUrl);
-		fetch(apiUrl)
-			.then((response) => response.json())
-			.then((data) => {
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
         setLoading(false);
-				setMeetings(data);
-			});
-	}, []);
-		return (
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Meetings meetings={meetings} loading={loading} />
-            </Route>
-            <Route exact path="/landing">
-              <Landing />
-            </Route>
-          </Switch>
-        </Router>
-      </ThemeProvider>
-	);
-}
+        setMeetings(data);
+      });
+  }, []);
+  return (
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Meetings meetings={meetings} loading={loading} />
+          </Route>
+          <Route exact path="/landing">
+            <Landing />
+          </Route>
+          <Route exact path="/signup">
+            <SignUp />
+          </Route>
+          <Route exact path="/login">
+            <LogIn />
+          </Route>
+        </Switch>
+      </Router>
+    </ThemeProvider>
+  );
+};
 export default App;

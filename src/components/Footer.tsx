@@ -3,7 +3,7 @@ import { makeStyles, IconButton } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import LinkedInIcon from "@material-ui/icons/LinkedIn";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   footerContainer: {
     backgroundColor: "#1A1A1D",
     height: "130px",

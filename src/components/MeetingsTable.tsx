@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "30px",
     minWidth: "0px",
     margin: "25px 0px",
+    backgroundColor: '#ffffff',
   },
 }));
 
@@ -85,7 +86,6 @@ const MeetingsTable: React.FC = () => {
   return (
     <div className={classes.meetingsTableRoot}>
       <fieldset className={classes.meetingsTableContainer}>
-        <legend style={{ marginLeft: "4%", fontSize: 40 }}>My Meetings</legend>
         <Grid container style={{ padding: "0px 3%" }}>
           <Grid
             item
@@ -95,6 +95,9 @@ const MeetingsTable: React.FC = () => {
             justify="space-between"
             style={{ margin: "20px 1%" }}
           >
+            <Grid item xs={12}>
+            <h1 style={{marginBottom: '20px'}}>My Meetings</h1>
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 type="search"

@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "30px",
     minWidth: "0px",
     margin: "125px 0px",
+    backgroundColor: '#ffffff',
   },
 }));
 
@@ -71,7 +72,6 @@ const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
   return (
     <div className={classes.contactsTableRoot}>
       <fieldset className={classes.contactsTableContainer}>
-        <legend style={{ marginLeft: "4%", fontSize: 40 }}>My Contacts</legend>
         <Grid container style={{ padding: "0px 3%" }}>
           <Grid
             item
@@ -81,6 +81,9 @@ const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
             justify="space-between"
             style={{ margin: "20px 1%" }}
           >
+            <Grid item xs={12}>
+            <h1 style={{marginBottom: '20px'}}>My Contacts</h1>
+            </Grid>
             <Grid item xs={6}>
               <TextField
                 type="search"
