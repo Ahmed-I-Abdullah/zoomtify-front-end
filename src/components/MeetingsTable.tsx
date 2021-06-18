@@ -142,8 +142,8 @@ const MeetingsTable: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {Meetings.map((meeting) => (
-                    <MeetingsTableRow tableRow={meeting} />
+                  {Meetings.map((meeting, index) => (
+                    <MeetingsTableRow key={index} tableRow={meeting} />
                   ))}
                 </TableBody>
               </Table>

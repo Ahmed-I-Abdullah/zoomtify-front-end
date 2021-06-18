@@ -125,8 +125,8 @@ const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {contacts.map((contact) => (
-                    <ContactsTableRow contactsRow={contact} />
+                  {contacts.map((contact, index) => (
+                    <ContactsTableRow key={index} contactsRow={contact} />
                   ))}
                 </TableBody>
               </Table>

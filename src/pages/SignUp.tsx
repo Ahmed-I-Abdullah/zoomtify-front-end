@@ -2,6 +2,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import SignUpForm from "../components/SignUpForm";
 import Background from "../assets/background.svg";
+// import clientInstance from '../httpClient';
+import { useHistory } from 'react-router-dom';
 
 interface SignUpProps {}
 

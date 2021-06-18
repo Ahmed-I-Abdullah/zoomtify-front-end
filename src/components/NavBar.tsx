@@ -57,7 +57,7 @@ const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
       <div className={classes.navRoot}>
       <div style={{ width: "20%" }}>
         <Link className={classes.linkDiv} to="/landing">
-          <img src={Logo} style={{ height: "55px" }} alt="Logo" />
+          <img src={Logo} style={{ height: "47px" }} alt="Logo" />
           <h1 className={classes.navTitle}>Zoomtify</h1>
         </Link>
       </div>
@@ -76,6 +76,8 @@ const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
           className={classes.navButton}
           variant="outlined"
           color="secondary"
+          component={Link}
+          to = {showLogIn ? "/login" : ""}
         >
         {showLogIn ? "Log In" : "Sign Out"}
         </Button>
