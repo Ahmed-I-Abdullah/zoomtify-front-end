@@ -36,10 +36,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
+const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts }) => {
   const { id, link, message, name, notified_contacts, start_date_time } = tableRow;
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
+  console.log("table row is: ", tableRow);
+  console.log("contacts are: ", contacts);
   return (
     <React.Fragment>
       <TableRow>

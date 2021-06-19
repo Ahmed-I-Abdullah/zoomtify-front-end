@@ -13,10 +13,10 @@ const App = () => {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Meetings />
-          </Route>
-          <Route exact path="/landing">
             <Landing />
+          </Route>
+          <Route exact path="/main">
+          <Meetings />
           </Route>
           <Route exact path="/signup">
             <SignUp />

@@ -53,7 +53,7 @@ const LogInForm: React.FC = () => {
         localStorage.setItem("refresh", res.data.refresh);
         clientInstance.defaults.headers["Authorization"] =
           "JWT " + localStorage.getItem(res.data.access);
-        history.push("/");
+        history.push("/main");
         console.log("token pair view response: ", res);
       }).catch((err) => console.log("token pair error: ", err));
   };
@@ -62,7 +62,7 @@ const LogInForm: React.FC = () => {
       <Paper elevation={2} className={classes.paperContainer}>
         <div className={classes.headerContainer}>
           <div className={classes.innerHeader}>
-          <Link className={classes.innerHeader} to="/landing">
+          <Link className={classes.innerHeader} to="/">
             <img
               src={Logo}
               style={{ height: "50px", marginRight: "15px" }}
