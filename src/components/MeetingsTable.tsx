@@ -16,54 +16,17 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import { MeetingStatus } from "../models/Enums";
+import Meeting from "../models/Meeting";
+import Contact from "../models/Contact";
 
-const Meetings = [
-  {
-    meetingName: "Monday's Standup",
-    startTime: new Date(),
-    url: "http://www.example.com/",
-    message: "Hello, attached is my meeting schedule",
-    status: MeetingStatus.Started,
-    contacts: [
-      {
-        name: "Ahmed Abdullah",
-      },
-      {
-        name: "Jack son",
-      },
-    ],
-  },
-  {
-    meetingName: "System Design Lecture",
-    startTime: new Date(2021, 11, 26, 10, 33, 30),
-    url: "https://example.com/bone",
-    message: "Have a good day!",
-    status: MeetingStatus.Opened,
-    contacts: [
-      {
-        name: "Test Contact",
-      },
-      {
-        name: "Youssef Random",
-      },
-    ],
-  },
-  {
-    meetingName: "My Club Meeting",
-    startTime: new Date(2021, 7, 15, 8, 23, 10),
-    url: "https://bubble.example.com/",
-    message: "..",
-    status: MeetingStatus.Failed,
-    contacts: [
-      {
-        name: "Omar Ibrahim",
-      },
-      {
-        name: "Mohammed al",
-      },
-    ],
-  },
-];
+interface ContactsArray extends Array<Contact> {}
+interface MeetingsArray extends Array<Meeting> {}
+
+interface MeetingsTableProps {
+  meetings: MeetingsArray | null;
+  contacts: ContactsArray | null;
+  loading: boolean;
+}
 
 const useStyles = makeStyles((theme) => ({
   meetingsTableRoot: {
@@ -80,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MeetingsTable: React.FC = () => {
+const MeetingsTable: React.FC<MeetingsTableProps> = ({ meetings, loading, contacts }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState(""); // to use for search bar
   return (
@@ -142,8 +105,8 @@ const MeetingsTable: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {Meetings.map((meeting, index) => (
-                    <MeetingsTableRow key={index} tableRow={meeting} />
+                  {meetings?.map((meeting, index) => (
+                    <MeetingsTableRow key={index} tableRow={meeting} contacts={contacts} />
                   ))}
                 </TableBody>
               </Table>

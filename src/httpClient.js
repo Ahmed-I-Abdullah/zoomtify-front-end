@@ -21,7 +21,7 @@ clientInstance.interceptors.response.use(
 		error.response.status === 401 &&
 		failedRequest.url === '/token/refresh/'
 	) {
-		window.location.href = '/login/';
+		//window.location.href = '/login';
 		return Promise.reject(error);
 	}
 
@@ -34,7 +34,11 @@ clientInstance.interceptors.response.use(
       return clientInstance
         .post("/token/refresh/", { refresh: refreshToken })
         .then((resp) => {
+          console.log("data at interceptor is: ", resp);
           localStorage.setItem("access", resp.data.access);
+          if(resp.refresh) {
+            localStorage.setItem("refresh", resp.data.refresh);
+          }
 
           clientInstance.defaults.headers["Authorization"] =
             "JWT " + resp.data.access;
@@ -46,7 +50,7 @@ clientInstance.interceptors.response.use(
           console.log(err);
         });
     }
-    window.location.href = "/login/";
+    //window.location.href = "/login";
     return Promise.reject(error);
   }
 );

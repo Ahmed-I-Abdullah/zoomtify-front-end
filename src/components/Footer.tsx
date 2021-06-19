@@ -11,6 +11,7 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     bottom: "0",
     textAlign: "center",
+    borderTop: '2px solid #ffffff',
   },
   contactInfo: {
     display: "inline-block",

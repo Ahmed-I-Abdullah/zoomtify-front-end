@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles, Button } from "@material-ui/core";
 import Logo from "../assets/logo.svg";
+import clientInstance from '../httpClient';
+import { useHistory } from "react-router";
 
 interface NavBarProps {
   showLogIn: boolean;
@@ -52,6 +54,17 @@ const useStyles = makeStyles({
 
 const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
   const classes = useStyles();
+  const history = useHistory();
+  const logout = () => {
+    clientInstance.post('users/blacklist/', {
+      refresh: localStorage.getItem('refresh')
+    }).then(() => {
+      localStorage.removeItem('access');
+      localStorage.removeItem('refresh');
+      clientInstance.defaults.headers['Authorization'] = null;
+      history.push('/landing');
+    }).catch((err) => console.log("error logging out user: ", err));
+  }
   return (
     <div className={classes.navContainer}> 
       <div className={classes.navRoot}>
@@ -76,8 +89,7 @@ const NavBar: React.FC<NavBarProps> = ({ showLogIn }) => {
           className={classes.navButton}
           variant="outlined"
           color="secondary"
-          component={Link}
-          to = {showLogIn ? "/login" : ""}
+          onClick = {showLogIn ? () => history.push('/login') : logout}
         >
         {showLogIn ? "Log In" : "Sign Out"}
         </Button>

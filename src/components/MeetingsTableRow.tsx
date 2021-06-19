@@ -18,44 +18,15 @@ import { MeetingStatus } from "../models/Enums";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import Meeting from "../models/Meeting";
+import Contact from "../models/Contact";
 
-interface ContactItem {
-  name: string;
-}
-
-interface ContactItems extends Array<ContactItem> {}
+interface ContactsArray extends Array<Contact> {}
 
 interface MeetingsTableRowProps {
-  tableRow: {
-    meetingName: string;
-    startTime: Date;
-    url: string;
-    message: string;
-    status: MeetingStatus;
-    contacts: ContactItems;
-  };
+  tableRow: Meeting;
+  contacts: ContactsArray | null;
 }
-
-const allContacts = [
-  {
-    name: "Omar Ibrahim",
-  },
-  {
-    name: "Mohammed al",
-  },
-  {
-    name: "Test Contact",
-  },
-  {
-    name: "Youssef Random",
-  },
-  {
-    name: "Ahmed Abdullah",
-  },
-  {
-    name: "Jack son",
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
-  const { meetingName, startTime, url, message, status, contacts } = tableRow;
+  const { id, link, message, name, notified_contacts, start_date_time } = tableRow;
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
   return (
@@ -77,11 +48,11 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
             {rowOpen ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell align="center">{meetingName}</TableCell>
-        <TableCell align="center">{startTime.toISOString()}</TableCell>
+        <TableCell align="center">{name}</TableCell>
+        <TableCell align="center">{start_date_time}</TableCell>
         <TableCell align="center">
-          <a href={url} target="_blank">
-            {url}
+          <a href={link} target="_blank">
+            {link}
           </a>
         </TableCell>
         <TableCell align="center">{message}</TableCell>
@@ -105,13 +76,10 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
           <Collapse in={rowOpen} timeout="auto" unmountOnExit>
             <Autocomplete
               multiple
-              options={allContacts.filter(
-                (contact) =>
-                  !contacts.map((value) => value.name).includes(contact.name)
-              )}
+              options={notified_contacts}
               disableCloseOnSelect
-              getOptionLabel={(option) => option.name}
-              defaultValue={[...contacts]}
+              getOptionLabel={(option) => option.toString()}
+              defaultValue={[...notified_contacts]}
               renderOption={(option, { selected }) => (
                 <React.Fragment>
                   <Checkbox
@@ -120,7 +88,7 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow }) => {
                     style={{ marginRight: 8 }}
                     checked={selected}
                   />
-                  {option.name}
+                  {option}
                 </React.Fragment>
               )}
               style={{ width: "50%" }}

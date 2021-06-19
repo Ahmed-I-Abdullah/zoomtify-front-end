@@ -9,13 +9,10 @@ import {
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Contact from '../models/Contact';
 
 interface ContactsTableRowProps {
-    contactsRow: {
-        firstName: string;
-        lastName: string;
-        phoneNumber: string;
-    }
+    contactsRow: Contact
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -27,14 +24,14 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const ContactsTableRow: React.FC<ContactsTableRowProps> = ({ contactsRow }) => {
-    const { firstName, lastName, phoneNumber } = contactsRow;
+    const { first_name, last_name, phone_number } = contactsRow;
     const classes = useStyles();
     return (
       <React.Fragment>
         <TableRow>
-          <TableCell align="center">{firstName}</TableCell>
-          <TableCell align="center">{lastName}</TableCell>
-          <TableCell align="center">{phoneNumber}</TableCell>
+          <TableCell align="center">{first_name}</TableCell>
+          <TableCell align="center">{last_name}</TableCell>
+          <TableCell align="center">{phone_number}</TableCell>
           <TableCell align="center">
             <Grid container direction="row" justify="center">
               <IconButton aria-label="view" color="primary">

@@ -15,41 +15,15 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
+import Contact from "../models/Contact";
 
-interface ContactsTableProps {}
 
-const contacts = [
-  {
-    firstName: "Omar",
-    lastName: "Ibrahim",
-    phoneNumber: "+1-613-555-0114",
-  },
-  {
-    firstName: "Mohammed",
-    lastName: "al",
-    phoneNumber: "+1-613-555-0123",
-  },
-  {
-    firstName: "Test",
-    lastName: "Contact",
-    phoneNumber: "+1-613-555-0138",
-  },
-  {
-    firstName: "Youssef",
-    lastName: "Random",
-    phoneNumber: "+1-613-555-0111",
-  },
-  {
-    firstName: "Ahmed",
-    lastName: "Abdullah",
-    phoneNumber: "+1-613-555-0105",
-  },
-  {
-    firstName: "Jack",
-    lastName: "son",
-    phoneNumber: "+1-613-555-0146",
-  },
-];
+interface ContactsArray extends Array<Contact> {}
+
+interface ContactsTableProps {
+  contacts: ContactsArray | null;
+  loading: boolean;
+}
 
 const useStyles = makeStyles((theme) => ({
   contactsTableRoot: {
@@ -66,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
+const ContactsTable: React.FC<ContactsTableProps> = ({ contacts, loading }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState(""); // to use for search bar
   return (
@@ -125,7 +99,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({}) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {contacts.map((contact, index) => (
+                  {contacts?.map((contact, index) => (
                     <ContactsTableRow key={index} contactsRow={contact} />
                   ))}
                 </TableBody>

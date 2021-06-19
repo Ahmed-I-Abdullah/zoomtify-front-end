@@ -5,6 +5,7 @@ export default interface Meeting {
     name: string;
     notified_contacts: NotifiedContacts;
     start_date_time: string;
+    user: number;
   };
 
 interface NotifiedContacts extends Array<number>{}
