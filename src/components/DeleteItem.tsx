@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Dialog,
@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 import Meeting from "../models/Meeting";
 import Contact from "../models/Contact";
+import ZoomtifyContext from "../contexts/ZoomtifyContext";
+import clientInstance from "../httpClient";
 
 interface AddEditMeetingProps {
   isMeeting: boolean;
@@ -25,14 +27,29 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
   open,
   setOpen,
 }) => {
+  const { fetchMeetings, fetchContacts } = useContext(ZoomtifyContext);
   const handleDeleteMeeting = () => {
-      //call api
-      setOpen(false);
+    if (!meeting) return;
+    clientInstance
+      .delete("meetings/" + meeting.id)
+      .then((resp) => {
+        console.log("deleted meeting: ", resp);
+        fetchMeetings();
+        setOpen(false);
+      })
+      .catch((err) => console.log("error deleting meeting: ", err));
   };
 
   const handleDeleteContact = () => {
-      //call api
-      setOpen(false);
+    if (!contact) return;
+    clientInstance
+      .delete("contacts/" + contact.id)
+      .then((resp) => {
+        console.log("deleted contact: ", resp);
+        fetchContacts();
+        setOpen(false);
+      })
+      .catch((err) => console.log("error deleting meeting: ", err));
   };
 
   return (

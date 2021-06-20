@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   TextField,
@@ -7,9 +7,14 @@ import {
   DialogContent,
   DialogTitle,
   Grid,
+  makeStyles,
 } from "@material-ui/core";
 import Contact from "../models/Contact";
 import MuiPhoneNumber from "material-ui-phone-number";
+import ZoomtifyContext from "../contexts/ZoomtifyContext";
+import Token from "../models/Token";
+import jwt_decode from "jwt-decode";
+import clientInstance from "../httpClient";
 
 interface AddEditContactProps {
   add: boolean;
@@ -18,20 +23,92 @@ interface AddEditContactProps {
   setOpen: Function;
 }
 
-const AddEditContact: React.FC<AddEditContactProps> = ({ add, contact, open, setOpen }) => {
-  const [firstName, setFirstName] = useState(contact?.first_name || '');
-  const [lastName, setLastName] = useState(contact?.last_name || '');
-  const [phoneNumber, setPhoneNumber] = useState(contact?.phone_number || '');
+const useStyles = makeStyles({
+  error: {
+    color: "#ff0000",
+  },
+});
 
-  const handleCreatContact = () => {};
+const AddEditContact: React.FC<AddEditContactProps> = ({
+  add,
+  contact,
+  open,
+  setOpen,
+}) => {
+  const classes = useStyles();
+  const { contacts, setContacts, fetchContacts } = useContext(ZoomtifyContext);
+  const [firstName, setFirstName] = useState(contact?.first_name || "");
+  const [lastName, setLastName] = useState(contact?.last_name || "");
+  const [phoneNumber, setPhoneNumber] = useState(contact?.phone_number || "");
+  const [errors, setErrors] = useState({
+    firstName: "",
+    phoneNumber: "",
+  });
 
-  const handleUpdateContact = () => {};
+  const decodedToken: Token = jwt_decode(localStorage.getItem("access") || "");
+  const resetErrors = () => setErrors({ firstName: "", phoneNumber: "" });
+
+  const validateData = () => {
+    resetErrors();
+    let isValid = true;
+    if (!firstName) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        firstName: "Contact Must have a first name.",
+      }));
+      isValid = false;
+    }
+    if (!phoneNumber) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        phoneNumber: "Contact must have a valid phone number.",
+      }));
+      isValid = false;
+    }
+    return isValid;
+  };
+
+  const handleCreatContact = () => {
+    if (!validateData()) return;
+    const newContact = {
+      associated_user: decodedToken.user_id,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phoneNumber,
+    };
+    console.log("new contact is: ", newContact);
+    clientInstance
+      .post("contacts", newContact)
+      .then((resp) => {
+        console.log("created contact, with response: ", resp);
+        resetErrors();
+        setContacts(contacts ? [...contacts, resp.data] : [resp.data]);
+        setOpen(false);
+      })
+      .catch((err) => console.log("error creating contact: ", err));
+  };
+
+  const handleUpdateContact = () => {
+    if (!validateData() || !contact) return;
+    const updatedContact = {
+      associated_user: contact.associated_user,
+      first_name: firstName,
+      last_name: lastName,
+      phone_number: phoneNumber,
+    };
+    clientInstance
+      .put(`contacts/` + contact.id + "/", updatedContact)
+      .then((resp) => {
+        console.log("updated contact, with response: ", resp);
+        resetErrors();
+        fetchContacts();
+        setOpen(false);
+      });
+  };
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>
-        {add ? "Add Contact" : "Edit Contact"}
-      </DialogTitle>
+      <DialogTitle>{add ? "Add Contact" : "Edit Contact"}</DialogTitle>
       <DialogContent>
         <Grid container direction="row">
           <Grid item container>
@@ -43,22 +120,29 @@ const AddEditContact: React.FC<AddEditContactProps> = ({ add, contact, open, set
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value.trim())}
               />
+              <div className={classes.error}>{errors.firstName}</div>
             </Grid>
             <Grid item xs={6}>
-            <TextField autoFocus margin="dense" label="Last Name" value={lastName}
-                onChange={(e) => setLastName(e.target.value.trim())} />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Last Name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value.trim())}
+              />
             </Grid>
           </Grid>
           <Grid item container>
             <Grid item xs={6}>
-            <MuiPhoneNumber
-                    name="phone"
-                    label="Phone Number"
-                    data-cy="user-phone"
-                    defaultCountry={"ca"}
-                    value={phoneNumber}
-                    onChange={(val) => setPhoneNumber(val)}
-                  />
+              <MuiPhoneNumber
+                name="phone"
+                label="Phone Number"
+                data-cy="user-phone"
+                defaultCountry={"ca"}
+                value={phoneNumber}
+                onChange={(val) => setPhoneNumber(val)}
+              />
+              <div className={classes.error}>{errors.phoneNumber}</div>
             </Grid>
           </Grid>
         </Grid>
