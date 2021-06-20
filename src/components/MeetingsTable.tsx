@@ -16,6 +16,7 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import { MeetingStatus } from "../models/Enums";
+import AddEditMeeting from './AddEditMeeting';
 import Meeting from "../models/Meeting";
 import Contact from "../models/Contact";
 
@@ -46,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 const MeetingsTable: React.FC<MeetingsTableProps> = ({ meetings, loading, contacts }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState(""); // to use for search bar
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
     <div className={classes.meetingsTableRoot}>
       <fieldset className={classes.meetingsTableContainer}>
@@ -84,7 +87,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ meetings, loading, contac
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => {}}
+                onClick={() => {setDialogOpen(true)}}
               >
                 Add Meeting
               </Button>
@@ -114,6 +117,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ meetings, loading, contac
           </Grid>
         </Grid>
       </fieldset>
+      <AddEditMeeting add={true} open={dialogOpen} setOpen={setDialogOpen} />
     </div>
   );
 };

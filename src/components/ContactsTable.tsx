@@ -16,6 +16,7 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import Contact from "../models/Contact";
+import AddEditContact from './AddEditContact';
 
 
 interface ContactsArray extends Array<Contact> {}
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const ContactsTable: React.FC<ContactsTableProps> = ({ contacts, loading }) => {
   const classes = useStyles();
   const [searchText, setSearchText] = useState(""); // to use for search bar
+  const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className={classes.contactsTableRoot}>
       <fieldset className={classes.contactsTableContainer}>
@@ -81,7 +83,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({ contacts, loading }) => {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => {}}
+                onClick={() => setDialogOpen(true)}
               >
                 Add Contact
               </Button>
@@ -108,6 +110,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({ contacts, loading }) => {
           </Grid>
         </Grid>
       </fieldset>
+      <AddEditContact add={true} open={dialogOpen} setOpen={setDialogOpen} />
     </div>
   );
 };

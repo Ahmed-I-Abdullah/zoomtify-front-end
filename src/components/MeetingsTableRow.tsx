@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { MeetingStatus } from "../models/Enums";
@@ -20,7 +19,8 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import Meeting from "../models/Meeting";
 import Contact from "../models/Contact";
-
+import AddEditMeeting from './AddEditMeeting';
+import DeleteItem from './DeleteItem';
 interface ContactsArray extends Array<Contact> {}
 
 interface MeetingsTableRowProps {
@@ -40,8 +40,9 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts 
   const { id, link, message, name, notified_contacts, start_date_time } = tableRow;
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
-  console.log("table row is: ", tableRow);
-  console.log("contacts are: ", contacts);
+  const [addEditOpen, setAddEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
   return (
     <React.Fragment>
       <TableRow>
@@ -61,27 +62,25 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts 
         <TableCell align="center">{status}</TableCell>
         <TableCell align="center">
           <Grid container direction="row">
-            <IconButton aria-label="view" color="primary">
-              <VisibilityIcon />
-            </IconButton>
-            <IconButton aria-label="edit" color="primary">
+            <IconButton aria-label="edit" color="primary" onClick={() => setAddEditOpen(true)}>
               <EditIcon />
             </IconButton>
-            <IconButton aria-label="delete" color="primary">
+            <IconButton aria-label="delete" color="primary" onClick={() => setDeleteOpen(true)}>
               <DeleteIcon />
             </IconButton>
           </Grid>
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={6}>
+        {contacts && (
+          <TableCell colSpan={6}>
           <Collapse in={rowOpen} timeout="auto" unmountOnExit>
             <Autocomplete
               multiple
-              options={notified_contacts}
+              options={contacts}
               disableCloseOnSelect
-              getOptionLabel={(option) => option.toString()}
-              defaultValue={[...notified_contacts]}
+              getOptionLabel={(option) => option.first_name + " " + option.last_name}
+              defaultValue={notified_contacts.map((contactId) => contacts?.filter((contact) => contact.id === contactId)[0])}
               renderOption={(option, { selected }) => (
                 <React.Fragment>
                   <Checkbox
@@ -90,7 +89,7 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts 
                     style={{ marginRight: 8 }}
                     checked={selected}
                   />
-                  {option}
+                  {option.first_name + " " + option.last_name}
                 </React.Fragment>
               )}
               style={{ width: "50%" }}
@@ -106,7 +105,10 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts 
             />
           </Collapse>
         </TableCell>
+        )}
       </TableRow>
+      <AddEditMeeting add={false} meeting={tableRow} open={addEditOpen} setOpen={setAddEditOpen} />
+      <DeleteItem isMeeting={true} meeting={tableRow} open={deleteOpen} setOpen={setDeleteOpen}/>
     </React.Fragment>
   );
 };

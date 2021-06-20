@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Grid,
   makeStyles,
@@ -6,10 +6,11 @@ import {
   IconButton,
   TableRow,
 } from "@material-ui/core";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Contact from '../models/Contact';
+import AddEditContact from './AddEditContact';
+import DeleteItem from './DeleteItem';
 
 interface ContactsTableRowProps {
     contactsRow: Contact
@@ -26,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 const ContactsTableRow: React.FC<ContactsTableRowProps> = ({ contactsRow }) => {
     const { first_name, last_name, phone_number } = contactsRow;
     const classes = useStyles();
+    const [addEditOpen, setAddEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
     return (
       <React.Fragment>
         <TableRow>
@@ -34,18 +37,17 @@ const ContactsTableRow: React.FC<ContactsTableRowProps> = ({ contactsRow }) => {
           <TableCell align="center">{phone_number}</TableCell>
           <TableCell align="center">
             <Grid container direction="row" justify="center">
-              <IconButton aria-label="view" color="primary">
-                <VisibilityIcon />
-              </IconButton>
-              <IconButton aria-label="edit" color="primary">
+              <IconButton aria-label="edit" color="primary" onClick={() => setAddEditOpen(true)}>
                 <EditIcon />
               </IconButton>
-              <IconButton aria-label="delete" color="primary">
+              <IconButton aria-label="delete" color="primary" onClick={() => setDeleteOpen(true)}>
                 <DeleteIcon />
               </IconButton>
             </Grid>
           </TableCell>
         </TableRow>
+        <AddEditContact add={false} contact={contactsRow} open={addEditOpen} setOpen={setAddEditOpen} />
+      <DeleteItem isMeeting={false} contact={contactsRow} open={deleteOpen} setOpen={setDeleteOpen}/>
       </React.Fragment>
     );
 }
