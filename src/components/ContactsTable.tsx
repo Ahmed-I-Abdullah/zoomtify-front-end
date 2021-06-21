@@ -110,7 +110,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({ contacts, loading }) => {
           </Grid>
         </Grid>
       </fieldset>
-      <AddEditContact add={true} open={dialogOpen} setOpen={setDialogOpen} />
+      <AddEditContact add={true} open={dialogOpen} contact={undefined} setOpen={setDialogOpen} />
     </div>
   );
 };

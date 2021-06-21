@@ -47,6 +47,17 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
 
   const decodedToken: Token = jwt_decode(localStorage.getItem("access") || "");
   const resetErrors = () => setErrors({ firstName: "", phoneNumber: "" });
+  const resetData = () => {
+    setFirstName("");
+    setLastName("");
+    setPhoneNumber("");
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    resetData();
+    resetErrors();
+  };
 
   const validateData = () => {
     resetErrors();
@@ -84,6 +95,7 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
         resetErrors();
         setContacts(contacts ? [...contacts, resp.data] : [resp.data]);
         setOpen(false);
+        resetData();
       })
       .catch((err) => console.log("error creating contact: ", err));
   };
@@ -107,7 +119,7 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog open={open} onClose={handleCancel}>
       <DialogTitle>{add ? "Add Contact" : "Edit Contact"}</DialogTitle>
       <DialogContent>
         <Grid container direction="row">
@@ -118,7 +130,7 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
                 margin="dense"
                 label="First Name"
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value.trim())}
+                onChange={(e) => setFirstName(e.target.value)}
               />
               <div className={classes.error}>{errors.firstName}</div>
             </Grid>
@@ -128,7 +140,7 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
                 margin="dense"
                 label="Last Name"
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value.trim())}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -148,12 +160,7 @@ const AddEditContact: React.FC<AddEditContactProps> = ({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            setOpen(false);
-          }}
-          color="primary"
-        >
+        <Button onClick={handleCancel} color="primary">
           Cancel
         </Button>
         <Button

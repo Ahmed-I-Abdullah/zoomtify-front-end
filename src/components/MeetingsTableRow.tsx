@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Grid,
   makeStyles,
@@ -21,6 +21,10 @@ import Meeting from "../models/Meeting";
 import Contact from "../models/Contact";
 import AddEditMeeting from './AddEditMeeting';
 import DeleteItem from './DeleteItem';
+import clientInstance from '../httpClient';
+import ZoomtifyContext from '../contexts/ZoomtifyContext';
+
+
 interface ContactsArray extends Array<Contact> {}
 
 interface MeetingsTableRowProps {
@@ -37,11 +41,29 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts }) => {
-  const { id, link, message, name, notified_contacts, start_date_time } = tableRow;
+  const { id, link, message, name, notified_contacts, start_date_time, user } = tableRow;
+  const { fetchMeetings } = useContext(ZoomtifyContext);
   const [rowOpen, setRowOpen] = useState(false);
   const classes = useStyles();
   const [addEditOpen, setAddEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+
+  
+  const handleUpdateMeetingContacts = (selectedContacts: Contact[]) => {
+    const contactsIds = selectedContacts.map((contact) => contact.id);
+    const updatedMeeting = {
+      link: link,
+      message: message,
+      name: name,
+      notified_contacts: contactsIds,
+      start_date_time: start_date_time,
+      user: user,
+    };
+    clientInstance.put(`meetings/` + id + '/', updatedMeeting).then((resp) => {
+      console.log("updated meeting, with response: ", resp);
+        fetchMeetings();
+    });
+  };
 
   return (
     <React.Fragment>
@@ -81,6 +103,9 @@ const MeetingsTableRow: React.FC<MeetingsTableRowProps> = ({ tableRow, contacts 
               disableCloseOnSelect
               getOptionLabel={(option) => option.first_name + " " + option.last_name}
               defaultValue={notified_contacts.map((contactId) => contacts?.filter((contact) => contact.id === contactId)[0])}
+              onChange={(e, contacts) => {
+                handleUpdateMeetingContacts(contacts);
+              }}
               renderOption={(option, { selected }) => (
                 <React.Fragment>
                   <Checkbox

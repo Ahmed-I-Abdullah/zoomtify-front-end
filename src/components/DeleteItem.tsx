@@ -47,6 +47,7 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
       .then((resp) => {
         console.log("deleted contact: ", resp);
         fetchContacts();
+        fetchMeetings();
         setOpen(false);
       })
       .catch((err) => console.log("error deleting meeting: ", err));

@@ -19,6 +19,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import clientInstance from "../httpClient";
 import jwt_decode from "jwt-decode";
 import ZoomtifyContext from "../contexts/ZoomtifyContext";
+import moment from 'moment';
 
 interface AddEditMeetingProps {
   add: boolean;
@@ -47,15 +48,28 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
   const [startDate, setStartDate] = useState<string | Date | null>(
     meeting?.start_date_time || null
   );
-
-  const decodedToken: Token = jwt_decode(localStorage.getItem("access") || "");
   const [errors, setErrors] = useState({
     meetingName: "",
     url: "",
     startDate: "",
   });
 
+  const decodedToken: Token = jwt_decode(localStorage.getItem("access") || "");
+
   const resetErrors = () => setErrors({ meetingName: "", url: "", startDate: "" });
+  const resetData = () => {
+    setMeetingName("");
+    setUrl("");
+    setMessage("");
+    setStartDate(null);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    resetData();
+    resetErrors();
+  }
+
 
   const validateData = () => {
     resetErrors();
@@ -103,6 +117,7 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
         resetErrors();
         setMeetings( meetings ? [...meetings, resp.data] : [resp.data]);
         setOpen(false);
+        resetData();
       })
       .catch((err) => console.log("error creating meeting: ", err));
   };
@@ -127,7 +142,7 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog open={open} onClose={handleCancel}>
       <DialogTitle id="form-dialog-title">
         {add ? "Add Meeting" : "Edit Meeting"}
       </DialogTitle>
@@ -150,7 +165,9 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
                   label="Start Time"
                   format="yyyy-MM-dd hh:mm a"
                   value={startDate}
-                  onChange={(selectedDate) => setStartDate(selectedDate)}
+                  onChange={(selectedDate) => {
+                    setStartDate(moment(selectedDate).format());
+                  }}
                 />
               </MuiPickersUtilsProvider>
               <div className={classes.error}>{errors.startDate}</div>
@@ -181,10 +198,7 @@ const AddEditMeeting: React.FC<AddEditMeetingProps> = ({
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={() => {
-            resetErrors();
-            setOpen(false);
-          }}
+          onClick={handleCancel}
           color="primary"
         >
           Cancel
